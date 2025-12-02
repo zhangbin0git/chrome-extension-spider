@@ -150,6 +150,22 @@ const Popup = () => {
           // [语法: ?.remove()] 可选链操作符 + DOM方法
           // [功能] 安全地从页面中移除这个侧边栏元素（如果它存在的话）
           questionSideColumn?.remove();
+
+          // [语法: document.querySelectorAll] DOM API，使用CSS类选择器查找所有匹配元素
+          // [功能] 找到页面中所有class为"Question-mainColumn"的元素（主内容栏）
+          // [返回值] 返回NodeList，包含所有匹配的元素
+          const mainColumns = document.querySelectorAll('.Question-mainColumn');
+
+          // [语法: .forEach()] 遍历方法，对集合中的每个元素执行相同操作
+          // [功能] 遍历所有主内容栏元素，将它们的宽度都设置为100%
+          mainColumns.forEach(column => {
+            // [语法: as HTMLElement] TypeScript类型断言，告诉编译器column是HTMLElement类型
+            // [原因] querySelectorAll返回的是Element类型，需要转换为HTMLElement才能访问style属性
+            // [语法: .style.width] CSS样式属性，控制元素的宽度
+            // [功能] 将元素宽度设置为100%，占满整个容器宽度
+            // [效果] 因为侧边栏已被移除，主内容栏可以扩展到全宽，提升阅读体验
+            (column as HTMLElement).style.width = '100%';
+          });
         },
       });
     } catch (err) {
