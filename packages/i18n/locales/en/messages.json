@@ -1,11 +1,11 @@
 {
   "extensionDescription": {
     "description": "Extension description",
-    "message": "modify by spider"
+    "message": "用来一键对知乎进行换装！"
   },
   "extensionName": {
     "description": "Extension name",
-    "message": "Chrome extension spider"
+    "message": "学习"
   },
   "toggleTheme": {
     "message": "Toggle theme"

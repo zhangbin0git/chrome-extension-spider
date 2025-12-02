@@ -21,7 +21,7 @@ const packageJson = JSON.parse(readFileSync('./package.json', 'utf8'));
 const manifest = {
   manifest_version: 3,
   default_locale: 'en',
-  name: '__MSG_extensionName__',
+  name: '__MSG_extensionName__', // [语法: __MSG_] i18n占位符，实际名称在 messages.json 中定义 (key: extensionName)
   browser_specific_settings: {
     gecko: {
       id: 'example@example.com',
@@ -29,8 +29,8 @@ const manifest = {
     },
   },
   version: packageJson.version,
-  description: '__MSG_extensionDescription__',
-  host_permissions: ['<all_urls>'],
+  description: '__MSG_extensionDescription__', // [语法: __MSG_] i18n占位符，实际描述在 messages.json 中定义 (key: extensionDescription)
+  host_permissions: ['https://www.zhihu.com/*'], // [修改] 限制主机权限，仅允许访问知乎域名
   permissions: ['storage', 'scripting', 'tabs', 'notifications', 'sidePanel'],
   options_page: 'options/index.html',
   background: {
@@ -41,31 +41,31 @@ const manifest = {
     default_popup: 'popup/index.html',
     default_icon: 'icon-34.png',
   },
-  chrome_url_overrides: {
-    newtab: 'new-tab/index.html',
-  },
+  // chrome_url_overrides: {
+  //   newtab: 'new-tab/index.html',
+  // },
   icons: {
     '128': 'icon-128.png',
   },
   content_scripts: [
     {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: ['https://www.zhihu.com/question/*'], // [修改] 仅在知乎问答详情页注入脚本 (ID为通配符)
       js: ['content/all.iife.js'],
     },
     {
       matches: ['https://example.com/*'],
       js: ['content/example.iife.js'],
     },
-    {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
-      js: ['content-ui/all.iife.js'],
-    },
+    // {
+    //   matches: ['https://www.zhihu.com/question/*'], // [修改] 仅在知乎问答详情页注入UI脚本
+    //   js: ['content-ui/all.iife.js'],
+    // },
     {
       matches: ['https://example.com/*'],
       js: ['content-ui/example.iife.js'],
     },
     {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: ['https://www.zhihu.com/question/*'], // [修改] 仅在知乎问答详情页注入CSS样式
       css: ['content.css'],
     },
   ],
@@ -78,6 +78,12 @@ const manifest = {
   ],
   side_panel: {
     default_path: 'side-panel/index.html',
+  },
+  // [知识点: CSP 内容安全策略] Content Security Policy,用于控制扩展可以加载的资源
+  // [功能] 允许开发环境下的HMR热更新功能通过WebSocket连接
+  // [注意] 生产环境不需要此配置,可以根据环境动态添加
+  content_security_policy: {
+    extension_pages: "script-src 'self'; object-src 'self'; connect-src 'self' ws://localhost:8081;",
   },
 } satisfies ManifestType;
 

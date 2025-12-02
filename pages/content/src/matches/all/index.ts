@@ -119,6 +119,17 @@ const handleCopyClick = async (): Promise<void> => {
     // [功能] 将文本复制到剪贴板
     await navigator.clipboard.writeText(combinedText);
 
+    // [语法: chrome.runtime.sendMessage] Chrome扩展消息传递API
+    // [功能] 发送消息到侧边栏,让侧边栏显示复制的答案列表
+    // [知识点: 消息传递] Chrome扩展的不同部分(content script/side panel/popup)通过消息传递进行通信
+    chrome.runtime.sendMessage({
+      type: 'COPY_ANSWERS', // [功能] 消息类型,用于识别这是复制答案的消息
+      data: {
+        answers: validTexts, // [功能] 将答案数组发送给侧边栏
+        timestamp: Date.now(), // [功能] 添加时间戳,记录复制时间
+      },
+    });
+
     // [功能] 显示成功提示
     showNotification(`成功复制${validTexts.length}条答案到剪贴板!`, 'success');
   } catch (error) {
