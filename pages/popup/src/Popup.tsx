@@ -66,6 +66,13 @@ const Popup = () => {
         target: { tabId: tab.id! }, // [语法: !] 非空断言，确保tab.id存在
         // [配置: func] 要执行的函数，这个函数会在目标页面的上下文中运行
         func: () => {
+          // [语法: document.documentElement] DOM API，获取HTML根元素（即<html>标签）
+          // [语法: .style.setProperty] CSS API，用于设置CSS自定义属性（变量）
+          // [参数1: '--GBL01A'] CSS变量名称，必须以--开头
+          // [参数2: 'black'] 要设置的新值，这里设置为黑色
+          // [功能] 修改全局CSS变量--GBL01A的值为黑色，这会影响所有使用这个变量的元素
+          document.documentElement.style.setProperty('--GBL01A', 'black');
+
           // [语法: document.querySelector] DOM API，使用CSS选择器查找页面元素
           // [功能] 找到知乎页面顶部导航栏中的logo SVG元素
           const zhihuLogo = document.querySelector('#root > div > div.css-s8xum0 > header > div > a > svg');
