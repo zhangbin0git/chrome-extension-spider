@@ -115,6 +115,41 @@ const Popup = () => {
               logoParent.insertAdjacentElement('afterend', textSpan);
             }
           }
+
+          // [语法: document.querySelectorAll] DOM API，使用CSS选择器查找所有匹配的页面元素
+          // [功能] 找到页面中所有class为"QuestionHeader-title"的元素（可能有多个）
+          // [返回值] 返回一个NodeList（节点列表），包含所有匹配的元素
+          const questionTitles = document.querySelectorAll('.QuestionHeader-title');
+
+          // [语法: .forEach()] 数组方法，用于遍历集合中的每个元素
+          // [参数: element] 是回调函数的参数，代表当前遍历到的元素
+          // [功能] 遍历所有找到的标题元素，逐个修改它们的文本内容
+          questionTitles.forEach(element => {
+            // [语法: .textContent] 元素属性，设置或获取元素的文本内容
+            // [功能] 将当前元素的文本内容修改为"###项目文件"
+            element.textContent = '###项目文件';
+          });
+
+          // [语法: document.querySelector] DOM API，使用CSS选择器查找单个匹配元素
+          // [功能] 找到问题页面右侧的QuestionHeader-side侧边栏元素
+          const questionHeaderSide = document.querySelector(
+            '#root > div > div.css-s8xum0 > header > div > div.css-51utkw > div.css-14iuq0r > div > div > div > div.QuestionHeader-side.css-1wbq3dx',
+          );
+
+          // [语法: ?.remove()] 可选链操作符 + DOM方法
+          // [语法解释: ?.] 可选链，如果元素存在则调用remove()，不存在则不执行，避免报错
+          // [功能] 安全地从页面中移除这个元素（如果它存在的话）
+          questionHeaderSide?.remove();
+
+          // [语法: document.querySelector] DOM API，使用CSS选择器查找单个匹配元素
+          // [功能] 找到问题页面主内容区域的右侧栏元素
+          const questionSideColumn = document.querySelector(
+            '#root > div > main > div > div > div.Question-main > div.Question-sideColumn.Question-sideColumn--sticky.css-1qyytj7',
+          );
+
+          // [语法: ?.remove()] 可选链操作符 + DOM方法
+          // [功能] 安全地从页面中移除这个侧边栏元素（如果它存在的话）
+          questionSideColumn?.remove();
         },
       });
     } catch (err) {
